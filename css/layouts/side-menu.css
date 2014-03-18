@@ -1,0 +1,169 @@
+body {
+    color: #777;
+}
+
+/*
+Add transition to containers so they can push in and out.
+*/
+#layout,
+#menu,
+.menu-link {
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    -ms-transition: all 0.2s ease-out;
+    -o-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+}
+
+/*
+This is the parent `<div>` that contains the menu and the content area.
+*/
+#layout {
+    left: 0;
+}
+
+/*
+The content `<div>` is where all your content goes.
+*/
+.content {
+    margin: 0 auto;
+    padding: 0 2em;
+    max-width: 800px;
+    margin-bottom: 50px;
+    line-height: 1.6em;
+}
+
+.header {
+     margin: 0;
+     color: #333;
+     text-align: center;
+     padding: 2.5em 2em 0;
+     border-bottom: 1px solid #eee;
+ }
+    .header h1 {
+        margin: 0.2em 0;
+        font-size: 3em;
+        font-weight: 300;
+        color: rgb(2, 166, 235);
+    }
+     .header h2 {
+        font-weight: 300;
+        color: #ccc;
+        padding: 0;
+        margin-top: 0;
+    }
+
+.content-subhead {
+    margin: 50px 0 20px 0;
+    font-weight: 300;
+    color: #888;
+}
+
+.blue {
+    color: rgb(2, 166, 235);
+}
+
+.button-success {
+    padding: 20px;
+    color: white;
+    border-radius: 5px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgba(28, 184, 65, 0.5);
+}
+
+ul { list-style: none; }
+
+/* -- Dynamic Button For Responsive Menu -------------------------------------*/
+
+/*
+The button to open/close the Menu is custom-made and not part of Pure. Here's
+how it works:
+*/
+
+/*
+`.menu-link` represents the responsive menu toggle that shows/hides on
+small screens.
+*/
+.menu-link {
+    display: none; /* show this only on small screens */
+    top: 0;
+    left: 150px; /* `#menu`'s width */
+    background: #000;
+    font-size: 10px; /* change this value to increase/decrease button size */
+    z-index: 10;
+    width: 2em;
+    height: auto;
+    padding: 2.2em 1.6em;
+}
+
+    .menu-link:hover,
+    .menu-link:focus {
+        background: #000;
+    }
+
+    .menu-link span {
+        position: relative;
+        display: block;
+    }
+
+    .menu-link span,
+    .menu-link span:before,
+    .menu-link span:after {
+        background-color: #fff;
+        width: 100%;
+        height: 0.2em;
+    }
+
+        .menu-link span:before,
+        .menu-link span:after {
+            position: absolute;
+            margin-top: -0.6em;
+            content: " ";
+        }
+
+        .menu-link span:after {
+            margin-top: 0.6em;
+        }
+
+
+/* -- Responsive Styles (Media Queries) ------------------------------------- */
+
+/*
+Hides the menu at `767px`, but modify this based on your app's needs.
+*/
+@media (max-width: 767px) {
+
+    .header {
+        text-align: left;
+    }
+
+    /*
+    Navigation Push styles.
+    */
+    #layout {
+        position: relative;
+        padding-left: 0;
+    }
+        #layout.active {
+            position: relative;
+            left: 150px;
+        }
+            #layout.active #menu {
+                left: 150px;
+                width: 150px;
+            }
+
+    #menu {
+        left: 0;
+    }
+
+    .menu-link {
+        position: fixed;
+        left: 0;
+        display: block; /* show the button on small screens */
+    }
+
+    #layout.active .menu-link {
+        left: 150px;
+    }
+}

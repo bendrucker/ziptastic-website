@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A layout example with a side menu that hides on mobile, just like the Pure website.">
+
+    <title>Ziptastic! &ndash; Postal Codes &ndash; Using data to make everyday life easier!</title>
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+
+<link rel="stylesheet" href="css/layouts/side-menu.css">
+<link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+
+
+<style type="text/css">
+  #mc_embed_signup{ clear:left; font:14px Helvetica,Arial,sans-serif; }
+  /* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+     We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+</style>
+
+<!-- The required Stripe lib -->
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+  Stripe.setPublishableKey('pk_test_iIs3BnZV9b3a0PEZULWHnBdK');
+
+  var stripeResponseHandler = function(status, response) {
+    var $form = $('#payment-form');
+
+    if (response.error) {
+      // Show the errors on the form
+      $form.find('.payment-errors').text(response.error.message);
+      $form.find('button').prop('disabled', false);
+    } else {
+      // token contains id, last4, and card type
+      var token = response.id;
+      // Insert the token into the form so it gets submitted to the server
+      $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+
+      console.log(token);
+      // and re-submit
+      $form.get(0).submit();
+    }
+  };
+
+  jQuery(function($) {
+    $('#payment-form').submit(function(e) {
+      var $form = $(this);
+
+      // Disable the submit button to prevent repeated clicks
+      $form.find('button').prop('disabled', true);
+
+      Stripe.createToken($form, stripeResponseHandler);
+
+      // Prevent the form from submitting with the default action
+      return false;
+    });
+  });
+</script>
+
+
+<script src="js/ui.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</head>
+<body>
+
+
+<div id="layout">
+    <div id="main">
+        <div class="header">
+            <h1>Ziptastic!</h1>
+            <h2>One less step between you and your customers</h2>
+        </div>
+
+        <div class="content">
+            <div id="subscribed"><h2 class="button-success">Thanks for subscribing!</h2></div>
+            <h2 class="content-subhead">What is Ziptastic<span class="blue">?</span></h2>
+            <p>
+                Ziptastic is a simple API service that allows people to ask which Country, State, County and City are associated with a <em>postal code</em>.
+
+            </p>
+            <p class="pure-hidden-phone">
+                The purpose for this service is to <em class="blue">STOP</em> the madness of having to fill those information out on webforms. If you've ever filled out a webform, then you have probably gotten to the address section and simply entered in your street information and then your city, country, state, country and then your zip code. This has always bothered me because the 3 fields prior to the zip code can be determined from the zip code!
+            </p>
+            <p>
+                <a href="https://twitter.com/ziptastic1" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow Ziptastic</a> <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-text="Ziptastic! &ndash; Postal Codes &ndash; Using data to make everyday life easier! GetZiptastic.com">Tweet</a>
+            </p>
+
+            <h2 class="content-subhead">How to use Ziptastic<span class="blue">!</span></h2>
+
+            <div class="pure-g-r">
+                <div class="pure-u-1-3">
+                    <h3>Demo (<a href="https://gist.github.com/daspecster/9611228">gist</a>)</h3>
+                    <form id="theform" class="pure-form pure-form-stacked">
+                        <fieldset>
+                            <label for="name">
+                                Name:
+                                <input type="text" id="name" placeholder="Full Name" value="Tom Schultz" />
+                            </label>
+                            <label for="address1">
+                                Address:
+                                <input type="text" id="address" placeholder="House Number, Street" value="123 Zip Ave." />
+                            </label>
+                            <label for="zip">
+                                Postal Code:
+                                <input type="text" id="zip" placeholder="Postal/Zip code" />
+                            </label>
+                            <label for="city">
+                                City:
+                                <input type="text" id="city" placeholder="City" />
+                            </label>
+
+                            <label for="state">
+                                State:
+                                <input type="text" id="state" placeholder="State" />
+                            </label>
+
+                            <label for="country">
+                                Country:
+                                <input type="text" id="country" placeholder="Country" />
+                            </label>
+                            <input type="submit" disabled="disabled" class="pure-button pure-button-primary" />
+                            <input type="reset" class="pure-button pure-button-primary" />
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="pure-u-2-3">
+                    <h3>Curl Example</h3>
+                    <pre>
+$ curl http://zip.getziptastic.com/v2/US/48867
+
+Response:
+{"city": "Owosso", "country": "US", "county": "Shiawassee", "state": "Michigan", "state_short": "MI", "postal_code": "48867"}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="pure-g-r">
+              <div class="pure-u-1">
+                <h2 class="content-subhead">
+                  Ziptastic is <span class="blue">free</span>! But servers cost money. Here's some ways to help us out!
+                </h2>
+              </div>
+            </div>
+
+            <div class="pure-g-r">
+              <div class="pure-u-1-3">
+                <h3>Subscribe $1 a month through Stripe</h3>
+
+                  <form action="http://localhost:1337" class="pure-form" method="POST" id="payment-form">
+                    <span class="payment-errors"></span>
+
+                    <div class="form-row">
+                      <input type="text" size="20" data-stripe="number" placeholder="Credit Card Number" />
+                      <input type="text" size="4" data-stripe="cvc" placeholder="CVC" />
+                    </div>
+
+                    <div class="form-row">
+                      <input type="text" size="2" class="pure-input-4-4" data-stripe="exp-month" placeholder="mm" />
+                      <input type="text" size="4" class="pure-input-4-4" data-stripe="exp-year" placeholder="yyyy" />
+                    </div>
+                    <div class="form-row">
+                      <button type="submit" class="pure-button pure-button-primary">Submit Payment</button>
+                    </div>
+                  </form>
+                </p>
+              </div>
+
+              <div class="pure-u-2-3">
+                <h3>Or Bitcoin/Litecoin</h3>
+                <ul>
+                  <li><a class="coinbase-button" data-code="e4828717ea7a873d3ab50c4031047f71" data-button-style="subscription_large" href="https://coinbase.com/checkouts/e4828717ea7a873d3ab50c4031047f71">Subscribe With Bitcoin</a><script src="https://coinbase.com/assets/button.js" type="text/javascript"></script></li>
+                  <li>BTC: 17j4AmyxYempz3QpVKm8sbxFfSvxEPk6he</li>
+                  <li>LTC: LNp6FtL4muBu8Tu6nURkUg8fPT3Sj2gfpu</li>
+                </ul>
+              </div>
+
+            <div class="pure-u-1">
+              <h2 class="content-subhead">Questions<span class="blue">?</span></h2>
+              <p>
+                  <ul>
+                      <li>
+                        <!-- Begin MailChimp Signup Form -->
+                        <div id="mc_embed_signup">
+                          <form class="pure-form" action="http://caradvocates.us7.list-manage.com/subscribe/post?u=eb1a30a267f5cf966e8006590&amp;id=cc3abe189c" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+                              <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                              <div style="position: absolute; left: -5000px;"><input type="text" name="b_eb1a30a267f5cf966e8006590_cc3abe189c" value=""></div>
+                              <input type="submit" value="Subscribe for updates!" name="subscribe" id="mc-embedded-subscribe" class="button pure-button pure-button-primary">
+                          </form>
+                        </div>
+                        <!--End mc_embed_signup-->
+                      </li>
+                      <li>Email: <a href="mailto:tom@getziptastic.com">tom@getziptastic.com</a></li>
+                  </ul>
+              </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">
+      (function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
+typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
+b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
+mixpanel.init("260efdc73003178a9c05ffb14f426483");
+  </script>
+  <!-- end Mixpanel -->
+  <script type="text/javascript">
+      (function($) {
+              var duration = 500;
+
+              var elements = {
+                  country: $('#country'),
+                  state: $('#state'),
+                  city: $('#city'),
+                  zip: $('#zip')
+              }
+
+              // Initially hide the city/state/zip
+              elements.country.parent().hide();
+              elements.state.parent().hide();
+              elements.city.parent().hide();
+
+              // Initialize the ziptastic and bind to the change of zip code
+              elements.zip.ziptastic()
+                  .on('zipChange', function(evt, country, state, city, zip) {
+                      elements.country.val(country).parent().show(duration);
+                      elements.state.val(state).parent().show(duration);
+                      elements.city.val(city).parent().show(duration);
+                  });
+
+              if (location.href.slice(-8) == 'thankyou') {
+                $('#subscribed').show();
+              } else {
+                $('#subscribed').hide();
+              }
+      }(jQuery));
+  </script>
+  <script>mixpanel.track("Home");</script>
+</body>
+</html>
