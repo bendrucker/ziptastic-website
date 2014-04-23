@@ -25,7 +25,7 @@
 
 <script type="text/javascript">
   // This identifies your website in the createToken call below
-  Stripe.setPublishableKey('pk_test_iIs3BnZV9b3a0PEZULWHnBdK');
+  Stripe.setPublishableKey('pk_live_RDrt353zRpv3tjJuUZDgR4sA');
 
   var stripeResponseHandler = function(status, response) {
     var $form = $('#payment-form');
@@ -77,6 +77,7 @@
 
         <div class="content">
             <div id="subscribed"><h2 class="button-success">Thanks for subscribing!</h2></div>
+            <div id="paid"><h2 class="button-success">Thanks for giving!</h2></div>
             <h2 class="content-subhead">What is Ziptastic<span class="blue">?</span></h2>
             <p>
                 Ziptastic is a simple API service that allows people to ask which Country, State, County and City are associated with a <em>postal code</em>.
@@ -148,12 +149,12 @@ Response:
 
             <div class="pure-g-r">
               <div class="pure-u-1-3">
-                <h3>Give $5 through Stripe</h3>
+                <h3>Give dollars through Stripe</h3>
 <p>
 <form action="" method="POST">
   <script
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="pk_test_iIs3BnZV9b3a0PEZULWHnBdK"
+    data-key="pk_live_RDrt353zRpv3tjJuUZDgR4sA"
     data-amount="500"
     data-name="Ziptastic"
     data-description="$5.00"
@@ -190,6 +191,24 @@ Response:
     data-label="Give $20"
     data-image="/128x128.png">
   </script>
+</form>
+</p>
+
+
+<p>
+
+<form action="" method="POST">
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="pk_live_RDrt353zRpv3tjJuUZDgR4sA"
+    data-amount="500"
+    data-name="Ziptastic"
+    data-description="$5.00/Month Subscription"
+    data-panel-label="Give"
+    data-label="Give $5 a month"
+    data-image="/128x128.png">
+  </script>
+  <input type="hidden" name="subscription" value="small" />
 </form>
 </p>
 <!--
@@ -284,6 +303,12 @@ mixpanel.init("260efdc73003178a9c05ffb14f426483");
                 $('#subscribed').show();
               } else {
                 $('#subscribed').hide();
+              }
+
+              if (location.href.slice(-17) == 'thankyouforgiving') {
+                $('#paid').show();
+              } else {
+                $('#paid').hide();
               }
       }(jQuery));
   </script>
