@@ -15,7 +15,7 @@ def generate_key(domain):
 
 @app.route('/')
 def index():
-    return 'hello world!'
+    return render_template('index.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -40,18 +40,25 @@ def signup():
 
             features = {}
             features['ziptastic_account'] = 'true'
+            features['usage'] = 0
             redis_user.hmset('features:' + form.domain.data + ":" + api_key, features)
 
 
             return render_template('signup_complete.html')
 
-    elif request.method == 'GET':
-        return render_template('signup.html', form=form)
+
+    return render_template('signup.html', form=form)
+
 
 
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
-    return render_template('dashboard.html')
+    user_email = session['user']['email']
+    redis_user = Redis(host='localhost', port=8322, db=1)
+    # features = redis_user.hgetall('features:' + hostname + ":" + api_key)
+    user = redis_user.hgetall('users:' + user_email)
+
+    return render_template('dashboard.html', welcome=user_email, user=user)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -72,8 +79,7 @@ def login():
                     session['user'] = user
                     print 'Redirecting to ' + url_for('dashboard')
                     return redirect(url_for('dashboard'))
-    elif request.method == 'GET':
-        return render_template('login.html', form=form)
+    return render_template('login.html', form=form)
 
 
 @app.route('/logout', methods=['GET'])
