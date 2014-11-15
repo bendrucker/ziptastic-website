@@ -2,5 +2,18 @@
 <h3>Welcome {{ welcome }}</h3>
 <h3>Usage</h3>
 {{ user }}
-<h3>API Key Management</h3>
+<h3>Domains</h3>
+{{ domains }}
+  <ul>
+  {% for domain in domains %}
+  <li>
+  <h4>{{ domain.domain }}</h4>
+    <ul>
+      {% for feature in domain.features %}
+      <li>{{ feature }}{{ feature.service }} - {{ feature.usage_limit }} </li>
+      {% endfor %}
+    </ul>
+</li>
+    {% endfor %}
+  </ul>
 <h3>Billing & Cancellation</h3>
